@@ -68,45 +68,53 @@ namespace LADLauncher
                     .GetAwaiter().GetResult();
                 string[] fields = manifest.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 if (fields.Length < 2 || !Regex.IsMatch(fields[0], "^[0-9a-fA-F]{40}$") ||
-                    !Regex.IsMatch(fields[1], "^[0-9a-fA-F]{64}$"))
+                    !Regex.IsMatch(fields[1], "^[0-9a-fA-F]{64}$") ||
+                    (fields.Length >= 3 && !Regex.IsMatch(fields[2], "^[0-9a-fA-F]{64}$")))
                 {
                     throw new InvalidDataException("Неверный файл версии LAD на GitHub.");
                 }
 
-                string expectedHash = fields[1];
-                if (File.Exists(executable) &&
-                    string.Equals(GetHash(executable), expectedHash, StringComparison.OrdinalIgnoreCase))
+                if (fields.Length >= 3)
                 {
-                    return;
+                    UpdateFile(client, "LAD.exe.config", executable + ".config", fields[2]);
                 }
+                UpdateFile(client, "LAD.exe", executable, fields[1]);
+            }
+        }
 
-                byte[] downloaded = client.GetByteArrayAsync(BuildUrl + "LAD.exe?" + expectedHash)
-                    .GetAwaiter().GetResult();
-                string actualHash = GetHash(downloaded);
-                if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new InvalidDataException("Контрольная сумма обновления LAD не совпадает.");
-                }
+        private static void UpdateFile(HttpClient client, string name, string destination, string expectedHash)
+        {
+            if (File.Exists(destination) &&
+                string.Equals(GetHash(destination), expectedHash, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
 
-                string temporary = executable + "." + Guid.NewGuid().ToString("N") + ".new";
-                string backup = executable + ".old";
-                try
+            byte[] downloaded = client.GetByteArrayAsync(BuildUrl + name + "?" + expectedHash)
+                .GetAwaiter().GetResult();
+            if (!string.Equals(GetHash(downloaded), expectedHash, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException("Контрольная сумма обновления " + name + " не совпадает.");
+            }
+
+            string temporary = destination + "." + Guid.NewGuid().ToString("N") + ".new";
+            string backup = destination + ".old";
+            try
+            {
+                File.WriteAllBytes(temporary, downloaded);
+                if (File.Exists(destination))
                 {
-                    File.WriteAllBytes(temporary, downloaded);
-                    if (File.Exists(executable))
-                    {
-                        File.Replace(temporary, executable, backup);
-                        try { File.Delete(backup); } catch (IOException) { }
-                    }
-                    else
-                    {
-                        File.Move(temporary, executable);
-                    }
+                    File.Replace(temporary, destination, backup);
+                    try { File.Delete(backup); } catch (IOException) { }
                 }
-                finally
+                else
                 {
-                    if (File.Exists(temporary)) File.Delete(temporary);
+                    File.Move(temporary, destination);
                 }
+            }
+            finally
+            {
+                if (File.Exists(temporary)) File.Delete(temporary);
             }
         }
 

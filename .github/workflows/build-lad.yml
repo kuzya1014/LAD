@@ -38,7 +38,8 @@ jobs:
           }
           Copy-Item Launcher/bin/Release/LADLauncher.exe LAD/bin/Release/LADLauncher.exe
           $hash = (Get-FileHash LAD/bin/Release/LAD.exe -Algorithm SHA256).Hash.ToLowerInvariant()
-          @($env:GITHUB_SHA, $hash) | Set-Content -Path version.txt -Encoding ascii
+          $configHash = (Get-FileHash LAD/bin/Release/LAD.exe.config -Algorithm SHA256).Hash.ToLowerInvariant()
+          @($env:GITHUB_SHA, $hash, $configHash) | Set-Content -Path version.txt -Encoding ascii
           Compress-Archive -Path 'LAD/bin/Release/*' -DestinationPath 'LAD-Tekla-2025.zip' -Force
       - name: Upload build artifact
         if: always()
