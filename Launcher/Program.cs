@@ -14,8 +14,9 @@ namespace LADLauncher
         private const string BuildUrl = "https://raw.githubusercontent.com/kuzya1014/LAD/build-output/";
 
         [STAThread]
-        private static void Main()
+        private static int Main(string[] args)
         {
+            bool checkOnly = args.Length == 1 && args[0] == "--check";
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             string executable = Path.Combine(directory, "LAD.exe");
             try
@@ -25,14 +26,17 @@ namespace LADLauncher
             catch (Exception exception)
             {
                 Log(exception);
+                if (checkOnly) return 1;
                 if (!File.Exists(executable))
                 {
                     MessageBox.Show("Не удалось загрузить LAD с GitHub, и локальной версии нет. " +
                         "Проверьте подключение к интернету или распакуйте LAD заново.\n\n" + exception.Message,
                         "LAD", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return 1;
                 }
             }
+
+            if (checkOnly) return File.Exists(executable) ? 0 : 1;
 
             try
             {
@@ -48,7 +52,9 @@ namespace LADLauncher
                 Log(exception);
                 MessageBox.Show("Не удалось запустить LAD: " + exception.Message,
                     "LAD", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 1;
             }
+            return 0;
         }
 
         private static void UpdateIfNeeded(string executable)
