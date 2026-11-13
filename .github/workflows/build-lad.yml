@@ -32,6 +32,9 @@ jobs:
           $testDirectory = Join-Path $env:RUNNER_TEMP 'lad-launcher-test'
           New-Item -ItemType Directory -Path $testDirectory | Out-Null
           Copy-Item Launcher/bin/Release/LADLauncher.exe $testDirectory
+          $previousBuild = (git ls-remote origin refs/heads/build-output) -split '\s+'
+          if (!$previousBuild[0]) { throw 'No previous successful LAD build for launcher test' }
+          $env:LAD_TEST_BUILD_URL = "https://raw.githubusercontent.com/kuzya1014/LAD/$($previousBuild[0])/"
           $test = Start-Process -FilePath (Join-Path $testDirectory 'LADLauncher.exe') -ArgumentList '--check' -Wait -PassThru
           if ($test.ExitCode -ne 0 -or !(Test-Path (Join-Path $testDirectory 'LAD.exe')) -or
               !(Test-Path (Join-Path $testDirectory 'LAD.exe.config'))) {
@@ -57,7 +60,7 @@ jobs:
             build.log
           if-no-files-found: warn
       - name: Publish build result for verification
-        if: always()
+        if: success()
         shell: pwsh
         run: |
           $output = Join-Path $env:RUNNER_TEMP 'lad-build-output'
