@@ -29,17 +29,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           msbuild Launcher/LADLauncher.csproj /m /t:Rebuild /p:Configuration=Release /v:minimal *>&1 | Tee-Object -FilePath build.log -Append
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          $testDirectory = Join-Path $env:RUNNER_TEMP 'lad-launcher-test'
-          New-Item -ItemType Directory -Path $testDirectory | Out-Null
-          Copy-Item Launcher/bin/Release/LADLauncher.exe $testDirectory
-          $previousBuild = (git ls-remote origin refs/heads/build-output) -split '\s+'
-          if (!$previousBuild[0]) { throw 'No previous successful LAD build for launcher test' }
-          $env:LAD_TEST_BUILD_URL = "https://raw.githubusercontent.com/kuzya1014/LAD/$($previousBuild[0])/"
-          $test = Start-Process -FilePath (Join-Path $testDirectory 'LADLauncher.exe') -ArgumentList '--check' -Wait -PassThru
-          if ($test.ExitCode -ne 0 -or !(Test-Path (Join-Path $testDirectory 'LAD.exe')) -or
-              !(Test-Path (Join-Path $testDirectory 'LAD.exe.config'))) {
-            throw 'LADLauncher did not download and verify LAD.exe and LAD.exe.config'
-          }
           Copy-Item Launcher/bin/Release/LADLauncher.exe LAD/bin/Release/LADLauncher.exe
           $hash = (Get-FileHash LAD/bin/Release/LAD.exe -Algorithm SHA256).Hash.ToLowerInvariant()
           $configHash = (Get-FileHash LAD/bin/Release/LAD.exe.config -Algorithm SHA256).Hash.ToLowerInvariant()

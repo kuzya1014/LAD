@@ -21,7 +21,7 @@ namespace LADLauncher
             string executable = Path.Combine(directory, "LAD.exe");
             try
             {
-                UpdateIfNeeded(executable, checkOnly);
+                UpdateIfNeeded(executable);
             }
             catch (Exception exception)
             {
@@ -57,24 +57,14 @@ namespace LADLauncher
             return 0;
         }
 
-        private static void UpdateIfNeeded(string executable, bool checkOnly)
+        private static void UpdateIfNeeded(string executable)
         {
-            string buildUrl = BuildUrl;
-            if (checkOnly)
-            {
-                string testUrl = Environment.GetEnvironmentVariable("LAD_TEST_BUILD_URL");
-                if (!string.IsNullOrEmpty(testUrl) &&
-                    testUrl.StartsWith("https://raw.githubusercontent.com/kuzya1014/LAD/", StringComparison.Ordinal))
-                {
-                    buildUrl = testUrl;
-                }
-            }
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(8);
                 string cacheKey = Guid.NewGuid().ToString("N");
-                string manifest = client.GetStringAsync(buildUrl + "version.txt?" + cacheKey)
+                string manifest = client.GetStringAsync(BuildUrl + "version.txt?" + cacheKey)
                     .GetAwaiter().GetResult();
                 string[] fields = manifest.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 if (fields.Length < 2 || !Regex.IsMatch(fields[0], "^[0-9a-fA-F]{40}$") ||
@@ -86,13 +76,13 @@ namespace LADLauncher
 
                 if (fields.Length >= 3)
                 {
-                    UpdateFile(client, buildUrl, "LAD.exe.config", executable + ".config", fields[2]);
+                    UpdateFile(client, "LAD.exe.config", executable + ".config", fields[2]);
                 }
-                UpdateFile(client, buildUrl, "LAD.exe", executable, fields[1]);
+                UpdateFile(client, "LAD.exe", executable, fields[1]);
             }
         }
 
-        private static void UpdateFile(HttpClient client, string buildUrl, string name, string destination, string expectedHash)
+        private static void UpdateFile(HttpClient client, string name, string destination, string expectedHash)
         {
             if (File.Exists(destination) &&
                 string.Equals(GetHash(destination), expectedHash, StringComparison.OrdinalIgnoreCase))
@@ -100,7 +90,7 @@ namespace LADLauncher
                 return;
             }
 
-            byte[] downloaded = client.GetByteArrayAsync(buildUrl + name + "?" + expectedHash)
+            byte[] downloaded = client.GetByteArrayAsync(BuildUrl + name + "?" + expectedHash)
                 .GetAwaiter().GetResult();
             if (!string.Equals(GetHash(downloaded), expectedHash, StringComparison.OrdinalIgnoreCase))
             {
