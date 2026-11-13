@@ -6,6 +6,7 @@ on:
     paths:
       - 'LAD/**'
       - 'LAD.sln'
+      - 'Launcher/**'
       - '.github/workflows/build-lad.yml'
   workflow_dispatch:
 
@@ -26,6 +27,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           msbuild LAD.sln /m /t:Rebuild /p:Configuration=Release '/p:Platform=Any CPU' /v:minimal *>&1 | Tee-Object -FilePath build.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          msbuild Launcher/LADLauncher.csproj /m /t:Rebuild /p:Configuration=Release /v:minimal *>&1 | Tee-Object -FilePath build.log -Append
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item Launcher/bin/Release/LADLauncher.exe LAD/bin/Release/LADLauncher.exe
+          $hash = (Get-FileHash LAD/bin/Release/LAD.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          @($env:GITHUB_SHA, $hash) | Set-Content -Path version.txt -Encoding ascii
           Compress-Archive -Path 'LAD/bin/Release/*' -DestinationPath 'LAD-Tekla-2025.zip' -Force
       - name: Upload build artifact
         if: always()
@@ -35,6 +41,8 @@ jobs:
           path: |
             LAD/bin/Release/LAD.exe
             LAD/bin/Release/LAD.exe.config
+            LAD/bin/Release/LADLauncher.exe
+            version.txt
             LAD-Tekla-2025.zip
             restore.log
             build.log
@@ -45,10 +53,10 @@ jobs:
         run: |
           $output = Join-Path $env:RUNNER_TEMP 'lad-build-output'
           New-Item -ItemType Directory -Path $output | Out-Null
-          foreach ($file in @('restore.log', 'build.log', 'LAD/bin/Release/LAD.exe', 'LAD/bin/Release/LAD.exe.config', 'LAD-Tekla-2025.zip')) {
+          foreach ($file in @('restore.log', 'build.log', 'LAD/bin/Release/LAD.exe', 'LAD/bin/Release/LAD.exe.config', 'LAD/bin/Release/LADLauncher.exe', 'LAD-Tekla-2025.zip', 'version.txt')) {
             if (Test-Path $file) { Copy-Item $file (Join-Path $output (Split-Path $file -Leaf)) }
           }
-          if ((Test-Path 'LAD/bin/Release/LAD.exe') -and (Test-Path 'LAD-Tekla-2025.zip')) {
+          if ((Test-Path 'LAD/bin/Release/LAD.exe') -and (Test-Path 'LAD-Tekla-2025.zip') -and (Test-Path 'version.txt')) {
             'Build succeeded' | Set-Content (Join-Path $output 'status.txt')
           } else {
             'Build failed' | Set-Content (Join-Path $output 'status.txt')
@@ -59,7 +67,7 @@ jobs:
           git rm -rf --quiet .
           Copy-Item "$output/*" .
           git add status.txt
-          foreach ($file in @('restore.log', 'build.log', 'LAD.exe', 'LAD.exe.config', 'LAD-Tekla-2025.zip')) {
+          foreach ($file in @('restore.log', 'build.log', 'LAD.exe', 'LAD.exe.config', 'LADLauncher.exe', 'LAD-Tekla-2025.zip', 'version.txt')) {
             if (Test-Path $file) { git add $file }
           }
           git commit -m "Windows build for $env:GITHUB_SHA"
