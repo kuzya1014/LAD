@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using SWF = System.Windows.Forms;
 using TSD = Tekla.Structures.Drawing;
-using TSM = Tekla.Structures.Model;
 
 namespace LAD
 {
@@ -44,13 +43,12 @@ namespace LAD
 
         private void OpenToolForSelection()
         {
-            var model = new TSM.Model();
-            if (!model.GetConnectionStatus())
+            var handler = new TSD.DrawingHandler();
+            if (!handler.GetConnectionStatus())
             {
-                throw new InvalidOperationException("Нет подключения к Tekla Structures. Откройте модель и повторите запуск.");
+                throw new InvalidOperationException("Нет подключения к чертежам Tekla Structures. Откройте модель и чертёж и повторите запуск.");
             }
 
-            var handler = new TSD.DrawingHandler();
             var drawing = handler.GetActiveDrawing();
             if (drawing == null)
             {
