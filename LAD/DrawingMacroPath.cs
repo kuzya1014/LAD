@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
 using Tekla.Structures;
 using Tekla.Structures.Model.Operations;
 
@@ -67,6 +68,8 @@ namespace LAD
 
         internal static void Run(string path)
         {
+            string generatedPath = path;
+            path = CacheMacro(generatedPath);
             string fallbackName = @"..\drawings\" + Path.GetFileName(path);
             bool started = false;
             try
@@ -88,6 +91,28 @@ namespace LAD
                 throw new FileNotFoundException("Tekla не нашла созданный макрос.", path);
             }
             // RunMacro starts the macro; deleting its source here can race with execution.
+            // The cached source stays in place for Tekla's compiled macro cache.
+            try { File.Delete(generatedPath); }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+        }
+
+        private static string CacheMacro(string generatedPath)
+        {
+            byte[] source = File.ReadAllBytes(generatedPath);
+            string hash;
+            using (var sha256 = SHA256.Create())
+            {
+                hash = BitConverter.ToString(sha256.ComputeHash(source)).Replace("-", "");
+            }
+            string cachedPath = Path.Combine(Path.GetDirectoryName(generatedPath),
+                "LAD_cached_" + hash.Substring(0, 24) + ".cs");
+            if (!File.Exists(cachedPath))
+            {
+                try { File.Copy(generatedPath, cachedPath); }
+                catch (IOException) { if (!File.Exists(cachedPath)) throw; }
+            }
+            return cachedPath;
         }
 
         private static void LogRun(string path, bool started)
@@ -120,6 +145,8 @@ namespace LAD
         {
             foreach (string path in Directory.EnumerateFiles(directory, "LAD_*.cs"))
             {
+                if (Path.GetFileName(path).StartsWith("LAD_cached_", StringComparison.Ordinal))
+                    continue;
                 if (File.GetLastWriteTimeUtc(path) > DateTime.UtcNow.AddDays(-1))
                 {
                     continue;

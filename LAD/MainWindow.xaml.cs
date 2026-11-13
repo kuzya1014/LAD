@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using SWF = System.Windows.Forms;
 using TSD = Tekla.Structures.Drawing;
-using TSM = Tekla.Structures.Model;
 
 namespace LAD
 {
@@ -68,14 +66,6 @@ namespace LAD
         {
             currentStage = "создание DrawingHandler";
             var handler = new TSD.DrawingHandler();
-            currentStage = "получение активного чертежа";
-            var drawing = handler.GetActiveDrawing();
-            if (drawing == null)
-            {
-                currentStage = "проверка соединения";
-                throw new InvalidOperationException("Не удалось получить активный чертёж Tekla. " + ConnectionDiagnostics(handler));
-            }
-
             currentStage = "чтение выделения";
             bool hasSelection = false;
             foreach (TSD.DrawingObject selected in handler.GetDrawingObjectSelector().GetSelected())
@@ -88,6 +78,10 @@ namespace LAD
                 if (selected is TSD.Text) return ToolKind.Text;
                 if (selected is TSD.Bolt)
                 {
+                    currentStage = "получение чертежа для изменения болтов";
+                    var drawing = handler.GetActiveDrawing();
+                    if (drawing == null)
+                        throw new InvalidOperationException("Откройте чертёж Tekla.");
                     currentStage = "изменение болтов";
                     ToggleSelectedBolts(handler, drawing);
                     return ToolKind.Bolt;
@@ -97,29 +91,6 @@ namespace LAD
             throw new InvalidOperationException(hasSelection
                 ? "Для выбранного объекта нет команды LAD. Выберите деталь, марку, размер, текст или сварку."
                 : "Ничего не выделено на чертеже Tekla.");
-        }
-
-        private static string ConnectionDiagnostics(TSD.DrawingHandler handler)
-        {
-            string drawingConnection;
-            string modelConnection;
-            string drawingOpen;
-            try { drawingConnection = handler.GetConnectionStatus().ToString(); }
-            catch (Exception ex) { drawingConnection = ex.GetType().Name; }
-            try { modelConnection = new TSM.Model().GetConnectionStatus().ToString(); }
-            catch (Exception ex) { modelConnection = ex.GetType().Name; }
-            try { drawingOpen = handler.IsAnyDrawingOpen().ToString(); }
-            catch (Exception ex) { drawingOpen = ex.GetType().Name; }
-
-            string version;
-            string teklaProcesses;
-            try { version = FileVersionInfo.GetVersionInfo(typeof(TSD.DrawingHandler).Assembly.Location).FileVersion; }
-            catch (Exception ex) { version = ex.GetType().Name; }
-            try { teklaProcesses = Process.GetProcessesByName("TeklaStructures").Length.ToString(); }
-            catch (Exception ex) { teklaProcesses = ex.GetType().Name; }
-            return string.Format("Соединение чертежа: {0}; модели: {1}; открыт чертёж: {2}; " +
-                "процессов TeklaStructures: {3}; версия API: {4}.",
-                drawingConnection, modelConnection, drawingOpen, teklaProcesses, version);
         }
 
         private void ShowFailure(Exception exception)
