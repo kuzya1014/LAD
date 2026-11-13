@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using SWF = System.Windows.Forms;
@@ -10,62 +12,85 @@ namespace LAD
 {
     public partial class MainWindow : Window
     {
-        private bool toolOpened;
+        private volatile string currentStage = "запуск";
+        private bool closed;
+
+        private enum ToolKind { PartMark, Dimensions, Part, Weld, Text, Bolt }
 
         public MainWindow()
         {
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
+            ContentRendered += MainWindow_ContentRendered;
+            Closed += (sender, args) => closed = true;
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_ContentRendered(object sender, EventArgs e)
         {
-            Loaded -= MainWindow_Loaded;
+            ContentRendered -= MainWindow_ContentRendered;
+            var completion = new TaskCompletionSource<ToolKind>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var worker = new Thread(() =>
+            {
+                try { completion.TrySetResult(ProbeSelection()); }
+                catch (Exception ex) { completion.TrySetException(ex); }
+            });
+            worker.IsBackground = true;
+            worker.SetApartmentState(ApartmentState.STA);
+            worker.Start();
+
+            Task finished = await Task.WhenAny(completion.Task, Task.Delay(TimeSpan.FromSeconds(10)));
+            if (closed) return;
+            if (finished != completion.Task)
+            {
+                ShowFailure(new TimeoutException("Tekla API не ответил за 10 секунд. Этап: " + currentStage));
+                return;
+            }
+
             try
             {
-                OpenToolForSelection();
-                if (toolOpened)
+                ToolKind kind = await completion.Task;
+                if (kind == ToolKind.Bolt)
                 {
-                    Hide(); // Keep the application alive until the tool window closes.
+                    Close();
+                    return;
                 }
-                else
-                {
-                    Close(); // The bolt command does not open a tool window.
-                }
+
+                Window tool = CreateTool(kind);
+                ShowTool(tool);
+                Hide();
             }
             catch (Exception ex)
             {
-                string logPath = App.WriteErrorLog(ex);
-                MessageBox.Show("Не удалось запустить LAD: " + ex.Message +
-                    (logPath == null ? "" : "\nПодробности: " + logPath),
-                    "LAD", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
+                ShowFailure(ex);
             }
         }
 
-        private void OpenToolForSelection()
+        private ToolKind ProbeSelection()
         {
+            currentStage = "создание DrawingHandler";
             var handler = new TSD.DrawingHandler();
+            currentStage = "получение активного чертежа";
             var drawing = handler.GetActiveDrawing();
             if (drawing == null)
             {
+                currentStage = "проверка соединения";
                 throw new InvalidOperationException("Не удалось получить активный чертёж Tekla. " + ConnectionDiagnostics(handler));
             }
 
+            currentStage = "чтение выделения";
             bool hasSelection = false;
-            // One launch opens one tool for the first supported object type.
             foreach (TSD.DrawingObject selected in handler.GetDrawingObjectSelector().GetSelected())
             {
                 hasSelection = true;
-                if (selected is TSD.Mark) { ShowTool(new WindowForPM()); return; }
-                if (selected is TSD.DimensionSetBase) { ShowTool(new WindowForDims()); return; }
-                if (selected is TSD.Part) { ShowTool(new WindowForPart()); return; }
-                if (selected is TSD.WeldMark) { ShowTool(new WindowForWeld()); return; }
-                if (selected is TSD.Text) { ShowTool(new WindowForText()); return; }
+                if (selected is TSD.Mark) return ToolKind.PartMark;
+                if (selected is TSD.DimensionSetBase) return ToolKind.Dimensions;
+                if (selected is TSD.Part) return ToolKind.Part;
+                if (selected is TSD.WeldMark) return ToolKind.Weld;
+                if (selected is TSD.Text) return ToolKind.Text;
                 if (selected is TSD.Bolt)
                 {
+                    currentStage = "изменение болтов";
                     ToggleSelectedBolts(handler, drawing);
-                    return;
+                    return ToolKind.Bolt;
                 }
             }
 
@@ -97,6 +122,29 @@ namespace LAD
                 drawingConnection, modelConnection, drawingOpen, teklaProcesses, version);
         }
 
+        private void ShowFailure(Exception exception)
+        {
+            if (closed) return;
+            string logPath = App.WriteErrorLog(exception);
+            MessageBox.Show(this, "Не удалось запустить LAD: " + exception.Message +
+                (logPath == null ? "" : "\nПодробности: " + logPath),
+                "LAD", MessageBoxButton.OK, MessageBoxImage.Error);
+            Close();
+        }
+
+        private static Window CreateTool(ToolKind kind)
+        {
+            switch (kind)
+            {
+                case ToolKind.PartMark: return new WindowForPM();
+                case ToolKind.Dimensions: return new WindowForDims();
+                case ToolKind.Part: return new WindowForPart();
+                case ToolKind.Weld: return new WindowForWeld();
+                case ToolKind.Text: return new WindowForText();
+                default: throw new InvalidOperationException("Неизвестный инструмент LAD.");
+            }
+        }
+
         private void ShowTool(Window tool)
         {
             var cursor = SWF.Cursor.Position;
@@ -105,7 +153,6 @@ namespace LAD
             tool.Closed += (sender, args) => Close();
             tool.Show();
             tool.Activate();
-            toolOpened = true;
         }
 
         private static void ToggleSelectedBolts(TSD.DrawingHandler handler, TSD.Drawing drawing)
@@ -115,21 +162,16 @@ namespace LAD
             {
                 TSD.Bolt bolt = selected as TSD.Bolt;
                 if (bolt == null) continue;
-
                 bolt.Attributes.Representation = bolt.Attributes.Representation is TSD.Bolt.Representation.Symbol3
                     ? TSD.Bolt.Representation.ExactSolid
                     : TSD.Bolt.Representation.Symbol3;
                 bolt.Modify();
                 modified = true;
             }
-
             if (modified) drawing.CommitChanges();
         }
 
-        private void Key_Down_Space(object sender, KeyEventArgs e)
-        {
-        }
-
+        private void Key_Down_Space(object sender, KeyEventArgs e) { }
         private void Key_Down_Close_Escape(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) Close();
