@@ -65,8 +65,15 @@ namespace LAD
             private void Segment_Click(object sender, MouseButtonEventArgs e)
             {
                 string shapeTag = (string)((Shape)e.OriginalSource).Tag;
-                PartMarkMacro(shapeTag);
-                this.Close();
+                try
+                {
+                    PartMarkMacro(shapeTag);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message, "LAD", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             //Метод tag to textblocktext
             void SegmentTagToTextBlock(Shape shape, TextBlock textBlock) => textBlock.Text = shape.Tag.ToString();
@@ -93,9 +100,7 @@ namespace LAD
                     {
                         if (shapeTag == "Edge")
                         {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -155,17 +160,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag == "Around")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -225,17 +225,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag == "1/4")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -298,17 +293,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag =="3/16")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -371,17 +361,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag =="2Fillet")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -444,17 +429,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag == "Fillet")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -517,17 +497,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if (shapeTag == "Field")
                     {
-                        string path = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -587,17 +562,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if(shapeTag =="Shop")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -657,17 +627,12 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                         if(shapeTag =="SW")
                     {
-                        string path = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-                        string pathdll = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-                        string pathpdb = @"C:\TeklaStructures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+                        string path = DrawingMacroPath.Create();
                         // This text is added only once to the file.
                         if (!File.Exists(path))
                         {
@@ -730,11 +695,8 @@ namespace LAD
                         string st19 = @"}" + Environment.NewLine;
                         File.AppendAllText(path, st19);
 
-                        TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+                        DrawingMacroPath.Run(path);
 
-                        File.Delete(path);
-                        File.Delete(pathdll);
-                        File.Delete(pathpdb);
                     }
                     }
                 }

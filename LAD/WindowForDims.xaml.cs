@@ -62,8 +62,15 @@ namespace LAD
         private void Segment_Click(object sender, MouseButtonEventArgs e)
         {
             string shapeTag = (string)((Shape)e.OriginalSource).Tag;
-            DimMacro(shapeTag);
-            this.Close();
+            try
+            {
+                DimMacro(shapeTag);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "LAD", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         //Метод tag to textblocktext
         void SegmentTagToTextBlock(Shape shape, TextBlock textBlock) => textBlock.Text = shape.Tag.ToString();
@@ -82,9 +89,7 @@ namespace LAD
         //Метод - Создание макроса для партмарок с определенным аттрибутом
         void DimMacro(string shapeTag)
         {
-            string path = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs";
-            string pathdll = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.dll";
-            string pathpdb = @"C:\ProgramData\Trimble\Tekla Structures\2022.0\Environments\common\macros\drawings\Paul_Macro.cs.pdb";
+            string path = DrawingMacroPath.Create();
             // This text is added only once to the file.
             if (!File.Exists(path))
             {
@@ -147,11 +152,8 @@ namespace LAD
             string st19 = @"}" + Environment.NewLine;
             File.AppendAllText(path, st19);
 
-            TSM.Operations.Operation.RunMacro(@"..\drawings\Paul_Macro.cs");
+            DrawingMacroPath.Run(path);
 
-            File.Delete(path);
-            File.Delete(pathdll);
-            File.Delete(pathpdb);
 
         }
         //Close button
