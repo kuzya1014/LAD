@@ -12,6 +12,7 @@ namespace LADLauncher
     internal static class Program
     {
         private const string BuildUrl = "https://raw.githubusercontent.com/kuzya1014/LAD/build-output/";
+        private static readonly TimeSpan CheckInterval = TimeSpan.FromMinutes(10);
 
         [STAThread]
         private static int Main(string[] args)
@@ -19,9 +20,16 @@ namespace LADLauncher
             bool checkOnly = args.Length == 1 && args[0] == "--check";
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             string executable = Path.Combine(directory, "LAD.exe");
+            string checkStamp = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "LAD", "last_update_check.txt");
             try
             {
-                UpdateIfNeeded(executable);
+                if (checkOnly || !File.Exists(executable) || !RecentlyChecked(checkStamp))
+                {
+                    UpdateIfNeeded(executable);
+                    if (!checkOnly) RememberCheck(checkStamp);
+                }
             }
             catch (Exception exception)
             {
@@ -34,6 +42,7 @@ namespace LADLauncher
                         "LAD", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 1;
                 }
+                RememberCheck(checkStamp);
             }
 
             if (checkOnly) return File.Exists(executable) ? 0 : 1;
@@ -62,7 +71,7 @@ namespace LADLauncher
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(8);
+                client.Timeout = TimeSpan.FromSeconds(3);
                 string cacheKey = Guid.NewGuid().ToString("N");
                 string manifest = client.GetStringAsync(BuildUrl + "version.txt?" + cacheKey)
                     .GetAwaiter().GetResult();
@@ -80,6 +89,27 @@ namespace LADLauncher
                 }
                 UpdateFile(client, "LAD.exe", executable, fields[1]);
             }
+        }
+
+        private static bool RecentlyChecked(string path)
+        {
+            try
+            {
+                return File.Exists(path) && DateTime.UtcNow - File.GetLastWriteTimeUtc(path) < CheckInterval;
+            }
+            catch (IOException) { return false; }
+            catch (UnauthorizedAccessException) { return false; }
+        }
+
+        private static void RememberCheck(string path)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.WriteAllText(path, DateTime.UtcNow.ToString("O"));
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
         }
 
         private static void UpdateFile(HttpClient client, string name, string destination, string expectedHash)

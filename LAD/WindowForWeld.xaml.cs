@@ -72,6 +72,7 @@ namespace LAD
                 }
                 catch (Exception ex)
                 {
+                    App.WriteErrorLog(ex);
                     MessageBox.Show(this, ex.Message, "LAD", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }

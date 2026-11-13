@@ -67,11 +67,41 @@ namespace LAD
 
         internal static void Run(string path)
         {
-            if (!Operation.RunMacro(@"..\drawings\" + Path.GetFileName(path)))
+            string fallbackName = @"..\drawings\" + Path.GetFileName(path);
+            bool started = false;
+            try
+            {
+                // Use the exact directory selected from XS_MACRO_DIRECTORY first.
+                started = Operation.RunMacro(path);
+            }
+            catch (FileNotFoundException)
+            {
+                // Older Tekla versions accept only a name relative to the macro directory.
+            }
+            if (!started)
+            {
+                started = Operation.RunMacro(fallbackName);
+            }
+            LogRun(path, started);
+            if (!started)
             {
                 throw new FileNotFoundException("Tekla не нашла созданный макрос.", path);
             }
             // RunMacro starts the macro; deleting its source here can race with execution.
+        }
+
+        private static void LogRun(string path, bool started)
+        {
+            try
+            {
+                string directory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LAD");
+                Directory.CreateDirectory(directory);
+                File.AppendAllText(Path.Combine(directory, "macro.log"),
+                    DateTime.Now + " RunMacro: " + path + "; accepted: " + started + Environment.NewLine);
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
         }
 
         private static string CreateInDirectory(string directory)
