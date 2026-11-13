@@ -1,0 +1,61 @@
+MSBuild auto-detection: using msbuild version '17.14.60.43110' from 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin'.
+Restoring NuGet package Tekla.Structures.2025.0.0.
+Restoring NuGet package Tekla.Structures.Datatype.2025.0.0.
+Restoring NuGet package Tekla.Structures.Catalogs.2025.0.0.
+Restoring NuGet package Tekla.Structures.Dialog.2025.0.0.
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures/2025.0.0/tekla.structures.2025.0.0.nupkg
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.dialog/2025.0.0/tekla.structures.dialog.2025.0.0.nupkg
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.catalogs/2025.0.0/tekla.structures.catalogs.2025.0.0.nupkg
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.datatype/2025.0.0/tekla.structures.datatype.2025.0.0.nupkg
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.dialog/2025.0.0/tekla.structures.dialog.2025.0.0.nupkg 17ms
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.catalogs/2025.0.0/tekla.structures.catalogs.2025.0.0.nupkg 22ms
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.datatype/2025.0.0/tekla.structures.datatype.2025.0.0.nupkg 25ms
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures/2025.0.0/tekla.structures.2025.0.0.nupkg 36ms
+Installed Tekla.Structures 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures\2025.0.0 with content hash 9G2O7pMj8HBykhaj/GWtnr0x29I6fzlYwyAfzgWoi4YP6kXRKaAQe4WgpuqkK62qR+Na93pUGm04bZ1ZnekyZw==.
+Installed Tekla.Structures.Catalogs 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.catalogs\2025.0.0 with content hash XnqVypDamW/02giDMTR8WsirPav7llm+nNFcX3bw6V37XGdeK0suRXAiOiiS8DB+dmDR+inEeGG1fG1ZVZZOyA==.
+Installed Tekla.Structures.Datatype 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.datatype\2025.0.0 with content hash 7kjhAWW64uoVBaojtNl3ohmFGrwXx36/d1M9u1ET8/LDze0q5jvd3BezlJuLyD/GVNbLKONBL4k3cVIbnw8Bng==.
+Adding package 'Tekla.Structures.Datatype.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Adding package 'Tekla.Structures.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Adding package 'Tekla.Structures.Catalogs.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Datatype.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Catalogs.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Restoring NuGet package Tekla.Structures.Drawing.2025.0.0.
+Restoring NuGet package Tekla.Structures.Model.2025.0.0.
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.drawing/2025.0.0/tekla.structures.drawing.2025.0.0.nupkg
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.model/2025.0.0/tekla.structures.model.2025.0.0.nupkg
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.model/2025.0.0/tekla.structures.model.2025.0.0.nupkg 8ms
+Added package 'Tekla.Structures.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Restoring NuGet package Tekla.Structures.Plugins.2025.0.0.
+  GET https://api.nuget.org/v3-flatcontainer/tekla.structures.plugins/2025.0.0/tekla.structures.plugins.2025.0.0.nupkg
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.plugins/2025.0.0/tekla.structures.plugins.2025.0.0.nupkg 13ms
+  OK https://api.nuget.org/v3-flatcontainer/tekla.structures.drawing/2025.0.0/tekla.structures.drawing.2025.0.0.nupkg 78ms
+Installed Tekla.Structures.Dialog 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.dialog\2025.0.0 with content hash JwdocVQ4Br+zttqqJ49+PIl925la394C3XwvTnCb1yL7AGyzBBa+KAIb19J6E1G1ZFwZA/xJdZjja323wIYQsQ==.
+Adding package 'Tekla.Structures.Dialog.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Installed Tekla.Structures.Plugins 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.plugins\2025.0.0 with content hash Ht8/5iAzRwamX4uwKoseAi2xnKAaPZHtOBJXuNWK9fKljyZ+UIo4IVURw9VTf+mEBJXNXW8cvbH+eIt/5hlMCQ==.
+Installed Tekla.Structures.Model 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.model\2025.0.0 with content hash OrM8HO2uhwtoXJbTppihrvYhd94WIJ1lwVTGb+NUAbv+LNX9uIvB4Yu9ASqGMFb0SUJgtavC57u6QeW5aeBD6Q==.
+Adding package 'Tekla.Structures.Plugins.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Adding package 'Tekla.Structures.Model.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Plugins.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Model.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Dialog.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Installed Tekla.Structures.Drawing 2025.0.0 from https://api.nuget.org/v3/index.json to C:\Users\runneradmin\.nuget\packages\tekla.structures.drawing\2025.0.0 with content hash n51R9lI+K6B/USwHM7RnTqTdykjlnEXT+2ZaI8TxnZiGRFykdKP+uJBBeUotI22esswlcvUBuLkBJJzorrOzmQ==.
+Adding package 'Tekla.Structures.Drawing.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+Added package 'Tekla.Structures.Drawing.2025.0.0' to folder 'D:\a\LAD\LAD\packages'
+  GET https://api.nuget.org/v3/vulnerabilities/index.json
+  OK https://api.nuget.org/v3/vulnerabilities/index.json 7ms
+  GET https://api.nuget.org/v3-vulnerabilities/2026.11.12.23.26.09/vulnerability.base.json
+  GET https://api.nuget.org/v3-vulnerabilities/2026.11.12.23.26.09/2026.11.13.11.26.11/vulnerability.update.json
+  OK https://api.nuget.org/v3-vulnerabilities/2026.11.12.23.26.09/vulnerability.base.json 4ms
+  OK https://api.nuget.org/v3-vulnerabilities/2026.11.12.23.26.09/2026.11.13.11.26.11/vulnerability.update.json 8ms
+
+NuGet Config files used:
+    C:\Users\runneradmin\AppData\Roaming\NuGet\NuGet.Config
+    C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.FallbackLocation.config
+    C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.Offline.config
+
+Feeds used:
+    https://api.nuget.org/v3/index.json
+    C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+
+Installed:
+    7 package(s) to packages.config projects

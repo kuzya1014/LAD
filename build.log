@@ -1,0 +1,8 @@
+MSBuild version 17.14.60+43b635718 for .NET Framework
+
+D:\a\LAD\LAD\LAD\WindowForText.xaml.cs(87,20): warning CS0219: The variable 'note' is assigned but its value is never used [D:\a\LAD\LAD\LAD\LAD_5h2wigl0_wpftmp.csproj]
+D:\a\LAD\LAD\LAD\WindowForText.xaml.cs(87,20): warning CS0219: The variable 'note' is assigned but its value is never used [D:\a\LAD\LAD\LAD\LAD.csproj]
+  LAD -> D:\a\LAD\LAD\LAD\bin\Release\LAD.exe
+MSBuild version 17.14.60+43b635718 for .NET Framework
+
+  LADLauncher -> D:\a\LAD\LAD\Launcher\bin\Release\LADLauncher.exe
