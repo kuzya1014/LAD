@@ -1,0 +1,230 @@
+﻿<Window x:Class="LAD.WindowForWeld"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LAD"
+        mc:Ignorable="d"
+        Title="Window1" Height="305" Width="305" Topmost="True" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="Manual" KeyDown="Key_Down_MW" >
+    <Window.Background>
+        <SolidColorBrush Color="Transparent" Opacity="0"/>
+    </Window.Background>
+    <Grid x:Name="myGrid" HorizontalAlignment="Left" Width="301" Height="300" VerticalAlignment="Top">
+
+        <Grid.Background>
+            <SolidColorBrush Color="#000EC119" Opacity="0"/>
+        </Grid.Background>
+        <Path x:Name="Segment01" Stroke ="lime" 
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Grid.Row="1" Grid.ColumnSpan="2" Width="301" Margin="0,150,0,0" VerticalAlignment="Top" Tag="Fillet">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="270" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment02" Stroke ="lime"        
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="2Fillet" StrokeLineJoin="Miter">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="300" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment03" Stroke ="lime" 
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="Field">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="330" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment04" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="Shop">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="0" CenterX="0" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+
+
+        <Path x:Name="Segment05" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="SW">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="30" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+        <Path x:Name="Segment06" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" VerticalAlignment="Top" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="FB">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="60" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+        <Path x:Name="Segment07" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="????">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+
+        <Path x:Name="Segment08" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="????">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="120" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment09" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="Edge">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="150" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment10" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="Around">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment11" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="3/16">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="210" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="Segment12" Stroke ="lime"
+                    Data="M 300,0 A 300,300 30 0 1  279.904,75 L 214.952,37.5 A 150,150 30 0 0 225,0 z" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Visibility="Visible" Fill="#B24B4B4B" StrokeThickness="1" Margin="0,150,0,0" Grid.Row="1" Grid.ColumnSpan="2" Height="76" Width="301" Tag="1/4">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="240" CenterX="150" CenterY="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Button x:Name="closeButton" Content="X" Click="CloseButtonClick" Background="#FFDC0707" Margin="0,10,10,0" HorizontalAlignment="Right" Width="30" Height="30" VerticalAlignment="Top"/>
+        <TextBlock x:Name="TextBlock01" Margin="0,36,39,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="75" Text="01" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock12" Margin="0,36,150,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="18" Text="12" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock11" Margin="0,60,150,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="75" Text="11" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock02" Margin="0,60,25,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="47" Text="02" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock03" Margin="0,122,-33,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="72" Text="03" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock10" Margin="0,122,187,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="24" HorizontalAlignment="Right" Width="72" Text="10" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock09" Margin="0,166,210,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="44" HorizontalAlignment="Right" Width="69" TextAlignment="Center" FontStretch="Normal" FontStyle="Normal" FontWeight="Normal" Text="09" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock08" Margin="0,0,179,63" TextWrapping="Wrap" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Right" Width="72" TextAlignment="Center" FontStretch="Normal" FontStyle="Normal" FontWeight="Normal" Text="08" Height="19" VerticalAlignment="Bottom" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock07" Margin="0,0,128,30" TextWrapping="Wrap" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Right" Width="72" TextAlignment="Center" FontStretch="Normal" FontStyle="Normal" FontWeight="Normal" Text="07" Height="19" VerticalAlignment="Bottom" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock06" Margin="0,0,70,30" TextWrapping="Wrap" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Right" Width="72" TextAlignment="Center" FontStretch="Normal" FontStyle="Normal" FontWeight="Normal" Text="06" Height="19" VerticalAlignment="Bottom" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock05" Margin="0,0,18,64" TextWrapping="Wrap" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Right" Width="72" TextAlignment="Center" FontStretch="Normal" FontStyle="Normal" FontWeight="Normal" Text="05" Height="19" VerticalAlignment="Bottom" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+        <TextBlock x:Name="TextBlock04" Margin="0,168,1,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.675,-0.746" FontFamily="Bahnschrift" IsEnabled="False" IsHitTestVisible="False" Height="42" HorizontalAlignment="Right" Width="58" Text="04" TextAlignment="Center" LineHeight="5" Foreground="Black">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="-16.934" Y="-1.458"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform></TextBlock>
+
+    </Grid>
+</Window>
