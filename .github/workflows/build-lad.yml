@@ -1,0 +1,64 @@
+name: Build LAD for Tekla 2025
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'LAD/**'
+      - 'LAD.sln'
+      - '.github/workflows/build-lad.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
+      - name: Restore and build
+        shell: pwsh
+        run: |
+          nuget restore LAD.sln -NonInteractive *>&1 | Tee-Object -FilePath restore.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          msbuild LAD.sln /m /t:Rebuild /p:Configuration=Release '/p:Platform=Any CPU' /v:minimal *>&1 | Tee-Object -FilePath build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LAD-Tekla-2025
+          path: |
+            LAD/bin/Release/LAD.exe
+            LAD/bin/Release/LAD.exe.config
+            restore.log
+            build.log
+          if-no-files-found: warn
+      - name: Publish build result for verification
+        if: always()
+        shell: pwsh
+        run: |
+          $output = Join-Path $env:RUNNER_TEMP 'lad-build-output'
+          New-Item -ItemType Directory -Path $output | Out-Null
+          foreach ($file in @('restore.log', 'build.log', 'LAD/bin/Release/LAD.exe', 'LAD/bin/Release/LAD.exe.config')) {
+            if (Test-Path $file) { Copy-Item $file (Join-Path $output (Split-Path $file -Leaf)) }
+          }
+          if (Test-Path 'LAD/bin/Release/LAD.exe') {
+            'Build succeeded' | Set-Content (Join-Path $output 'status.txt')
+          } else {
+            'Build failed' | Set-Content (Join-Path $output 'status.txt')
+          }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan build-output
+          git rm -rf --quiet .
+          Copy-Item "$output/*" .
+          git add status.txt
+          foreach ($file in @('restore.log', 'build.log', 'LAD.exe', 'LAD.exe.config')) {
+            if (Test-Path $file) { git add $file }
+          }
+          git commit -m "Windows build for $env:GITHUB_SHA"
+          git push --force origin HEAD:refs/heads/build-output

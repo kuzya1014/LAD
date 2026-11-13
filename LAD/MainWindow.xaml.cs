@@ -45,34 +45,39 @@ namespace LAD
 
                 if (myDrawing != null)
                 {
-                    foreach (TSD.DrawingObject myDrawingObject in myDrawingHandler.GetDrawingObjectSelector().GetSelected())
+                    // Choose one tool for the first supported type in the selection.
+                    foreach (TSD.DrawingObject selected in myDrawingHandler.GetDrawingObjectSelector().GetSelected())
                     {
-                        if (myDrawingObject is TSD.Mark) OpenWindowForPartMark();
-                        //рд можно добавить
-                        //ай походу тоже через макросы нужно будет делать
-                        else if (myDrawingObject is TSD.DimensionSetBase) OpenWindowDims();
-                        else if (myDrawingObject is TSD.Part) OpenWindowForParts();
-                        else if (myDrawingObject is TSD.WeldMark) OpenWindowForWelds();
-                        //{
-                        //    TSD.WeldMark SelectedWeld = (TSD.WeldMark)myDrawingObject;
-                        //    SelectedWeld.Attributes.Font.Color = TSD.DrawingColors.Blue;
-                        //    //SelectedWeld.Delete();
-                        //    SelectedWeld.Modify();
-                        //    myDrawing.CommitChanges();
-                        //}
-                        else if (myDrawingObject is TSD.Text) OpenWindowForText();
-                        else if (myDrawingObject is TSD.Bolt)
+                        if (selected is TSD.Mark) { OpenWindowForPartMark(); return; }
+                        if (selected is TSD.DimensionSetBase) { OpenWindowDims(); return; }
+                        if (selected is TSD.Part) { OpenWindowForParts(); return; }
+                        if (selected is TSD.WeldMark) { OpenWindowForWelds(); return; }
+                        if (selected is TSD.Text) { OpenWindowForText(); return; }
+                        if (selected is TSD.Bolt)
                         {
-                            TSD.Bolt selBolt = myDrawingObject as TSD.Bolt;
-                            if (selBolt.Attributes.Representation is TSD.Bolt.Representation.Symbol3)
-                                selBolt.Attributes.Representation = TSD.Bolt.Representation.ExactSolid;
-                            else selBolt.Attributes.Representation = TSD.Bolt.Representation.Symbol3;
-                            selBolt.Modify();
-                            myDrawing.CommitChanges();
+                            ToggleSelectedBolts(myDrawingHandler, myDrawing);
+                            return;
                         }
                     }
                 }
             }
+        }
+        private static void ToggleSelectedBolts(TSD.DrawingHandler handler, TSD.Drawing drawing)
+        {
+            bool modified = false;
+            foreach (TSD.DrawingObject selected in handler.GetDrawingObjectSelector().GetSelected())
+            {
+                TSD.Bolt bolt = selected as TSD.Bolt;
+                if (bolt == null) continue;
+
+                bolt.Attributes.Representation = bolt.Attributes.Representation is TSD.Bolt.Representation.Symbol3
+                    ? TSD.Bolt.Representation.ExactSolid
+                    : TSD.Bolt.Representation.Symbol3;
+                bolt.Modify();
+                modified = true;
+            }
+
+            if (modified) drawing.CommitChanges();
         }
         //Работает весь код при нажатии на пробел
         private void Key_Down_Space(object sender, KeyEventArgs e)
