@@ -98,6 +98,7 @@ namespace LAD
                 {
                     foreach (TSD.DrawingObject myDrawingObject in myDrawingHandler.GetDrawingObjectSelector().GetSelected())
                     {
+                        if (!(myDrawingObject is TSD.WeldMark)) continue;
                         if (shapeTag == "Edge")
                         {
                         string path = DrawingMacroPath.Create();
@@ -698,6 +699,7 @@ namespace LAD
                         DrawingMacroPath.Run(path);
 
                     }
+                        break; // One macro acts on the whole Tekla selection.
                     }
                 }
             }

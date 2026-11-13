@@ -90,7 +90,8 @@ namespace LAD
             {
                 foreach (TSD.DrawingObject myDrawingObject in myDrawingHandler.GetDrawingObjectSelector().GetSelected())
                 {
-                    TSD.Part SelectedPart = (TSD.Part)myDrawingObject;
+                    TSD.Part SelectedPart = myDrawingObject as TSD.Part;
+                    if (SelectedPart == null) continue;
                     if(shapeTag == "Yellow")
                     {
                         SelectedPart.Attributes.VisibleLines.Color = TSD.DrawingColors.Yellow;

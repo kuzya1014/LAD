@@ -88,11 +88,13 @@ namespace LAD
             string rev = "REV 1";
             TSD.DrawingHandler myDrawingHandler = new TSD.DrawingHandler();
             TSD.Drawing myDrawing = myDrawingHandler.GetActiveDrawing();
+            if (myDrawing == null) return;
             foreach (TSD.DrawingObject myDrawingObject in myDrawingHandler.GetDrawingObjectSelector().GetSelected())
             {
+                TSD.Text selText = myDrawingObject as TSD.Text;
+                if (selText == null) continue;
                 if (newText == rev)
                 {
-                    TSD.Text selText = myDrawingObject as TSD.Text;
                     selText.TextString = $"1";
                     selText.Attributes.UseWordWrapping = true;
                     selText.Attributes.Frame.Type = TSD.FrameTypes.Triangle;
@@ -107,7 +109,6 @@ namespace LAD
                 }
                 else
                 {
-                    TSD.Text selText = myDrawingObject as TSD.Text;
                     selText.TextString = $"{newText}";
                     selText.Attributes.UseWordWrapping = true;
                     selText.Attributes.RulerWidth = 25.4 * 1.5;
