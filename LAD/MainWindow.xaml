@@ -5,4 +5,4 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LAD"
         mc:Ignorable="d"
-        Title="LoadAttributesPlugin" Topmost="True" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" KeyDown="Key_Down_Close_Escape" Visibility="Visible" Width="195" Height="130" KeyUp="Key_Down_Space" />
+        Title="LoadAttributesPlugin" Topmost="True" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" KeyDown="Key_Down_Close_Escape" ShowInTaskbar="False" Opacity="0" Width="195" Height="130" KeyUp="Key_Down_Space" />
