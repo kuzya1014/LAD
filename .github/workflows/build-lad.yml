@@ -67,9 +67,14 @@ jobs:
           git checkout --orphan build-output
           git rm -rf --quiet .
           Copy-Item "$output/*" .
+          'LAD.exe.config -text' | Set-Content -Path .gitattributes -Encoding ascii
+          git add .gitattributes
           git add status.txt
           foreach ($file in @('restore.log', 'build.log', 'LAD.exe', 'LAD.exe.config', 'LADLauncher.exe', 'LAD-Tekla-2025.zip', 'version.txt')) {
             if (Test-Path $file) { git add $file }
           }
           git commit -m "Windows build for $env:GITHUB_SHA"
+          $workingBlob = (git hash-object --no-filters LAD.exe.config).Trim()
+          $publishedBlob = (git rev-parse 'HEAD:LAD.exe.config').Trim()
+          if ($workingBlob -ne $publishedBlob) { throw 'Git changed LAD.exe.config before publication' }
           git push --force origin HEAD:refs/heads/build-output
