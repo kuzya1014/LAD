@@ -64,7 +64,7 @@ namespace LAD
             string shapeTag = (string)((Shape)e.OriginalSource).Tag;
             try
             {
-                DrawingAttributeCommands.ApplyDimensions(shapeTag);
+                PropertyPaneMacro.ApplyPreset(shapeTag);
                 this.Close();
             }
             catch (Exception ex)

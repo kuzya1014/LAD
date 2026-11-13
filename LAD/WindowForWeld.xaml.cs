@@ -67,7 +67,7 @@ namespace LAD
                 string shapeTag = (string)((Shape)e.OriginalSource).Tag;
                 try
                 {
-                    if (shapeTag == "SW") DrawingAttributeCommands.ApplyWeldPreset("SEAL WELD");
+                    if (shapeTag == "SW") PropertyPaneMacro.ApplyPreset("SEAL WELD");
                     else PartMarkMacro(shapeTag);
                     this.Close();
                 }
