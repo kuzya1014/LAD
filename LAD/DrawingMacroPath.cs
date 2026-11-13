@@ -31,8 +31,19 @@ namespace LAD
 
                     string name = Path.GetFileName(macroDirectory.TrimEnd(
                         Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
-                    string drawingDirectory = string.Equals(name, "drawings", StringComparison.OrdinalIgnoreCase)
-                        ? macroDirectory : Path.Combine(macroDirectory, "drawings");
+                    string drawingDirectory;
+                    if (string.Equals(name, "drawings", StringComparison.OrdinalIgnoreCase))
+                    {
+                        drawingDirectory = macroDirectory;
+                    }
+                    else if (string.Equals(name, "modeling", StringComparison.OrdinalIgnoreCase))
+                    {
+                        drawingDirectory = Path.Combine(Path.GetDirectoryName(macroDirectory), "drawings");
+                    }
+                    else
+                    {
+                        drawingDirectory = Path.Combine(macroDirectory, "drawings");
+                    }
                     try
                     {
                         return CreateInDirectory(drawingDirectory);
